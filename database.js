@@ -53,3 +53,55 @@ function createDatabase() {
     });
     db = newdb;
 }
+
+function query(query) {
+    return new Promise((resolve, reject) => {
+        db.all(query, (err, rows) => {
+            if (err) {
+                logger.error(err);
+                reject(err);
+                return;
+            }
+            resolve(rows);
+        });
+    });
+}
+
+async function getStudentById(id) {
+    let rows = await query(`SELECT * FROM students WHERE id=${id};`);
+    if (rows.length == 0) {
+        return null;
+    }
+    let student = rows[0];
+
+    let parentEmails = await query(`SELECT id, email, description FROM parentEmails WHERE studentID=${student.id};`);
+    student.parentEmails = parentEmails;
+
+    let phoneNumbers = await query(`SELECT id, phoneNumber, description FROM phoneNumbers WHERE studentID=${student.id};`);
+    student.phoneNumbers = phoneNumbers;
+
+    return student;
+}
+
+async function getStudentByCardId(cardId) {
+    let rows = await query(`SELECT * FROM students WHERE cardID = ${cardId};`);
+    if (rows.length == 0) {
+        return null;
+    }
+    let student = rows[0];
+
+    let parentEmails = await query(`SELECT id, email, description FROM parentEmails WHERE studentID = ${student.id};`);
+    student.parentEmails = parentEmails;
+
+    let phoneNumbers = await query(`SELECT id, phoneNumber, description FROM phoneNumbers WHERE studentID = ${student.id};`);
+    student.phoneNumbers = phoneNumbers;
+
+    return student;
+}
+
+
+
+module.exports = {
+    getStudentById,
+    getStudentByCardId
+}
