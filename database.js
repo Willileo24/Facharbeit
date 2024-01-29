@@ -99,9 +99,15 @@ async function getStudentByCardId(cardId) {
     return student;
 }
 
+async function getStudentsByName(name) {
+    let rows = await query(`SELECT id, name, firstName, class FROM students WHERE name LIKE '${name}%' OR firstName LIKE '${name}%';`);
+    return rows;
+}
+
 
 
 module.exports = {
     getStudentById,
-    getStudentByCardId
+    getStudentByCardId,
+    getStudentsByName
 }
