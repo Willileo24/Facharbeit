@@ -24,6 +24,8 @@ if (!process.env.PORT) {
 
 // Setup server
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(log4js.connectLogger(logger, { level: "auto" }));
 
 app.use('/api/students', require('./routes/students'));

@@ -23,4 +23,14 @@ router.get('/getStudents', async (req, res) => {
     }
 });
 
+router.post('/addStudent', async (req, res) => {
+    if (req.body.name && req.body.firstName && req.body.birthDate && req.body.address && req.body.email) {
+        res.json({
+            id: await database.insertStudent(req.body.name, req.body.firstName, req.body.birthDate, req.body.address, req.body.email, req.body.class)
+        });
+    } else {
+        res.sendStatus(400);
+    }
+});
+
 module.exports = router;

@@ -104,10 +104,16 @@ async function getStudentsByName(name) {
     return rows;
 }
 
+async function insertStudent(name, firstName, birthDate, address, studentEmail, studentClass) {
+    let result = await query(`INSERT INTO students (name, firstName, birthDate, address, studentEmail, class) VALUES ('${name}', '${firstName}', ${Date.parse(birthDate)}, '${address}', '${studentEmail}', '${studentClass}') RETURNING id;`);
+    return result[0].id;
+}
+
 
 
 module.exports = {
     getStudentById,
     getStudentByCardId,
-    getStudentsByName
+    getStudentsByName,
+    insertStudent
 }
