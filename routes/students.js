@@ -33,4 +33,13 @@ router.post('/addStudent', async (req, res) => {
     }
 });
 
+router.get('/deleteStudent', async (req, res) => {
+    if (req.query.id) {
+        database.deleteStudent(req.query.id);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(400);
+    }
+});
+
 module.exports = router;

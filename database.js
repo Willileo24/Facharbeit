@@ -109,11 +109,18 @@ async function insertStudent(name, firstName, birthDate, address, studentEmail, 
     return result[0].id;
 }
 
+async function deleteStudent(id) {
+    await query(`DELETE FROM students WHERE id = ${id};`);
+    await query(`DELETE FROM parentEmails WHERE studentID = ${id};`);
+    await query(`DELETE FROM phoneNumbers WHERE studentID = ${id};`)
+}
+
 
 
 module.exports = {
     getStudentById,
     getStudentByCardId,
     getStudentsByName,
-    insertStudent
+    insertStudent,
+    deleteStudent
 }
