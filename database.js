@@ -2,6 +2,8 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3');
 const logger = require('log4js').getLogger("default");
 
+const EDITABLE_FIELDS = ["name", "firstName", "birthDate", "address", "studentEmail", "class", "lockerID", "cardID", "cardLocked"];
+
 var db = new sqlite3.Database('./data/database.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         if (err.code == "SQLITE_CANTOPEN") {
@@ -115,6 +117,54 @@ async function deleteStudent(id) {
     await query(`DELETE FROM phoneNumbers WHERE studentID = ${id};`)
 }
 
+async function editStudent(id, options) {
+    var req = "UPDATE students SET ";
+    var doRequest = false;
+    Object.keys(options).forEach((key) => {
+        if (EDITABLE_FIELDS.includes(key)) {
+            req += `${key} = ${(key == "birthDate" ? Date.parse(options[key]) : "'" + options[key] + "'")}, `;
+            doRequest = true;
+        }
+    });
+    req = req.replace(/, $/, "");
+    req += `WHERE id = ${id} RETURNING *;`;
+    if (doRequest) {
+        await query(req);
+    }
+    if (options.parentEmails) {
+        await editParentEmails(id, options.parentEmails);
+    }
+    if (options.phoneNumbers) {
+        await editPhoneNumbers(id, options.phoneNumbers);
+    }
+    return getStudentById(id);
+}
+
+async function editParentEmails(studentId, emails) {
+    emails.forEach(async (email) => {
+        switch (email.action) {
+            case "new":
+                await query(`INSERT INTO parentEmails (studentID, email, description) VALUES (${studentId}, '${email.email}', '${email.description}');`);
+                break;
+            case "remove":
+                await query(`DELETE FROM parentEmails WHERE studentID = ${studentId} AND id = ${email.id};`);
+                break;
+        }
+    });
+}
+
+async function editPhoneNumbers(studentId, numbers) {
+    numbers.forEach(async (number) => {
+        switch (number.action) {
+            case "new":
+                await query(`INSERT INTO phoneNumber (studentID, phoneNumber, description) VALUES (${studentId}, '${number.phoneNumber}', '${number.description}');`);
+                break;
+            case "remove":
+                await query(`DELETE FROM phoneNumber WHERE studentID = ${studentId} AND id = ${number.id};`);
+                break;
+        }
+    });
+}
 
 
 module.exports = {
@@ -122,5 +172,6 @@ module.exports = {
     getStudentByCardId,
     getStudentsByName,
     insertStudent,
-    deleteStudent
+    deleteStudent,
+    editStudent
 }

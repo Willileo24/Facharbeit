@@ -42,4 +42,12 @@ router.get('/deleteStudent', async (req, res) => {
     }
 });
 
+router.post('/editStudent', async (req, res) => {
+    if (req.body.id) {
+        res.json(await database.editStudent(req.body.id, req.body));
+    } else {
+        res.sendStatus(400);
+    }
+});
+
 module.exports = router;
