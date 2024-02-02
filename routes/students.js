@@ -1,4 +1,5 @@
 const express = require('express');
+const { WebUntisSecretAuth, WebUntisElementType } = require('webuntis');
 const database = require('../database');
 
 const router = express.Router();
@@ -13,6 +14,23 @@ router.get('/getStudent', async (req, res) => {
         res.sendStatus(400);
     }
     res.json(student);
+});
+
+router.get('/getStudentTimetable', async (req, res) => {
+    if (req.query.id) {
+        let student = await database.getStudentById(req.query.id);
+        if (student.untisID) {
+            let untis = new WebUntisSecretAuth(process.env.UNTIS_SCHOOL, process.env.UNTIS_USERNAME, process.env.UNTIS_SECRET, process.env.UNTIS_SERVER);
+            await untis.login();
+            let timetable = await untis.getOwnTimetableFor(new Date(), student.untisID, WebUntisElementType.STUDENT);
+            await untis.logout();
+            res.json(timetable);
+        } else {
+            res.json([]);
+        }
+    } else {
+        res.sendStatus(400);
+    }
 });
 
 router.get('/getStudents', async (req, res) => {

@@ -26,6 +26,7 @@
     "passport": "^0.7.0",
     "passport-openidconnect": "^0.1.1",
     "sqlite3": "^5.1.7",
+    "webuntis": "^2.0.3",
     "ws": "^8.16.0"
   },
   "devDependencies": {

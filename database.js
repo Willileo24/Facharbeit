@@ -2,7 +2,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3');
 const logger = require('log4js').getLogger("default");
 
-const EDITABLE_FIELDS = ["name", "firstName", "birthDate", "address", "studentEmail", "class", "lockerID", "cardID", "cardLocked"];
+const EDITABLE_FIELDS = ["name", "firstName", "birthDate", "address", "studentEmail", "class", "lockerID", "cardID", "cardLocked", "untisID"];
 
 var db = new sqlite3.Database('./data/database.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
@@ -36,7 +36,8 @@ function createDatabase() {
             class VARCHAR(10),
             lockerID INTEGER,
             cardID INTEGER,
-            cardLocked BOOLEAN
+            cardLocked BOOLEAN,
+            untisID INTEGER
         );`);
         newdb.exec(`
         CREATE TABLE parentEmails (
