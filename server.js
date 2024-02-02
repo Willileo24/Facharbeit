@@ -41,8 +41,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/students', ensureAuthenticated, require('./routes/students'));
+app.use('/api/nfc', require('./routes/nfc').router);
 app.use('/auth', require('./routes/auth'));
 
-app.listen(process.env.PORT, () => {
+let server = app.listen(process.env.PORT, () => {
     logger.info(`Server is running on port ${process.env.port}`);
 });
+
+server.on('upgrade', (request, socket, head) => {
+    require('./routes/nfc').wsServer.handleUpgrade(request, socket, head, (socket) => {});
+ });  

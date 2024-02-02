@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC-Reader</title>
+</head>
+<body>
+    <script>
+        let reader = new NDEFReader();
+
+        reader
+            .scan()
+            .then(() => {
+                reader.onreadingerror = (e) => {
+                    console.log("Error");
+                }
+                reader.onreading = (e) => {
+                    console.log(e);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    </script>
+</body>
+</html>
