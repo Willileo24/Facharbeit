@@ -1,5 +1,6 @@
 const express = require('express');
 const { WebUntisSecretAuth, WebUntisElementType } = require('webuntis');
+const { authenticator } = require('otplib');
 const database = require('../database');
 
 const router = express.Router();
@@ -21,8 +22,10 @@ router.get('/getStudentTimetable', async (req, res) => {
         let student = await database.getStudentById(req.query.id);
         if (student.untisID) {
             let untis = new WebUntisSecretAuth(process.env.UNTIS_SCHOOL, process.env.UNTIS_USERNAME, process.env.UNTIS_SECRET, process.env.UNTIS_SERVER);
-            await untis.login();
-            let timetable = await untis.getOwnTimetableFor(new Date(), student.untisID, WebUntisElementType.STUDENT);
+            const token = authenticator.generate(process.env.UNTIS_SECRET);
+            const time = new Date().getTime();
+            await untis._otpLogin(token, untis.username, time, true);
+            let timetable = await untis.getTimetableFor(new Date(), student.untisID, WebUntisElementType.STUDENT);
             await untis.logout();
             res.json(timetable);
         } else {
