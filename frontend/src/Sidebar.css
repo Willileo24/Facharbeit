@@ -1,0 +1,7 @@
+.sidebar {
+    width: 25vw;
+    max-width: 250px;
+    height: 100vh;
+    position: fixed;
+    background-color: #ffffff;
+}
