@@ -1,0 +1,52 @@
+.untisLesson {
+    display: grid;
+    grid-template-areas: 'startTime startTime'
+    'subject subject'
+    'teacher room'
+    'endTime endTime';
+    font-size: 12px;
+    background: #fff;
+    margin-bottom: 2px;
+    border: 1px solid white;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.untisLesson.cancelled {
+    border-color: red;
+}
+
+.untisLesson.current {
+    color: var(--accentColor)
+}
+
+.untisLesson span {
+    padding: 0px;
+    text-align: center;
+}
+
+.untisLesson .startTime {
+    grid-area: startTime;
+    font-size: 8px;
+    text-align: left;
+}
+
+.untisLesson .subject {
+    grid-area: subject;
+}
+
+.untisLesson .teacher {
+    grid-area: teacher;
+    margin-left: 2.5px;
+}
+
+.untisLesson .room {
+    grid-area: room;
+    margin-right: 2.5px;
+}
+
+.untisLesson .endTime {
+    grid-area: endTime;
+    font-size: 8px;
+    text-align: left;
+}

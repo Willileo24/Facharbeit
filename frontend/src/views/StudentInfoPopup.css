@@ -1,3 +1,9 @@
+.studentInfoPopup {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 40px
+}
+
 .studentInfoPopup .studentInfoSection {
     display: flex;
     flex-direction: column;
