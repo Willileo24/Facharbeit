@@ -158,10 +158,10 @@ async function editPhoneNumbers(studentId, numbers) {
     numbers.forEach(async (number) => {
         switch (number.action) {
             case "new":
-                await query(`INSERT INTO phoneNumber (studentID, phoneNumber, description) VALUES (${studentId}, '${number.phoneNumber}', '${number.description}');`);
+                await query(`INSERT INTO phoneNumbers (studentID, phoneNumber, description) VALUES (${studentId}, '${number.phoneNumber}', '${number.description}');`);
                 break;
             case "remove":
-                await query(`DELETE FROM phoneNumber WHERE studentID = ${studentId} AND id = ${number.id};`);
+                await query(`DELETE FROM phoneNumbers WHERE studentID = ${studentId} AND id = ${number.id};`);
                 break;
         }
     });
