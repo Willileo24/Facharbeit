@@ -1,14 +1,24 @@
 const express = require('express');
-const ws = require('ws');
+const { WebSocketServer } = require('ws');
+const path = require('path');
 
-const wsServer = new ws.Server({ noServer: true });
+let wsServer;
 
 const router = express.Router();
 
+function websocket(server) {
+    wsServer = new WebSocketServer({server: server, path: '/api/nfc'});
+}
+
+router.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'static', 'nfc.html'));
+});
+
 router.post('/readNfc', (req, res) => {
+    console.log(req.body);
     if (req.body.sessionId && req.body.nfcId) {
         wsServer.clients.forEach((client) => {
-            client.send(JSON.stringify({sessionId: req.body.sessionId, nfcId: req.body.nfcId}));
+            client.send(JSON.stringify({sessionId: req.body.sessionId, nfcId: parseInt(req.body.nfcId)}));
         });
         res.sendStatus(200);
     } else {
@@ -16,4 +26,4 @@ router.post('/readNfc', (req, res) => {
     }
 });
 
-module.exports = {router, wsServer};
+module.exports = {router, websocket};

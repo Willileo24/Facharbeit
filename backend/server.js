@@ -48,6 +48,4 @@ let server = app.listen(process.env.PORT, () => {
     logger.info(`Server is running on port ${process.env.port}`);
 });
 
-server.on('upgrade', (request, socket, head) => {
-    require('./routes/nfc').wsServer.handleUpgrade(request, socket, head, (socket) => {});
- });  
+require('./routes/nfc').websocket(server);

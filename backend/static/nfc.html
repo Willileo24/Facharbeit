@@ -4,9 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFC-Reader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
+    <div id="content">
+        Warte auf NFC...
+    </div>
     <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let sessionId = urlParams.get("sessionId");
         let reader = new NDEFReader();
 
         reader
@@ -16,12 +30,29 @@
                     console.log("Error");
                 }
                 reader.onreading = (e) => {
-                    console.log(e);
+                    var result = parseInt(e.serialNumber.replaceAll(":", ""), 16)
+                    document.getElementById('content').innerHTML = "Gescannt: " + result;
+                    sendRead(result)
+                    clearTimeout();
                 }
             })
             .catch((err) => {
                 console.log(err);
+                document.getElementById('content').innerHTML = err;
             });
+
+        function clearTimeout() {
+            setTimeout(() => {
+                document.getElementById('content').innerHTML = "Warte auf NFC...";
+            }, 5000);
+        }
+
+        function sendRead(read) {
+            var http = new XMLHttpRequest();
+            http.open("POST", "/api/nfc/readNfc", true);
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            http.send(`sessionId=${sessionId}&nfcId=${read}`);
+        }
     </script>
 </body>
 </html>
