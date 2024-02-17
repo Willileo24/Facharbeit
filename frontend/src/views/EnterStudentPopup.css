@@ -1,0 +1,15 @@
+.enterStudentPopup {
+    display: flex;
+    flex-direction: column;
+}
+
+.enterStudentPopup input {
+    padding: 10px;
+    margin: 5px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    outline: none !important;
+    text-align: center;
+}

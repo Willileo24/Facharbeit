@@ -1,0 +1,25 @@
+.readView {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.readView button {
+    width: 300px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #ffffff;
+    border: none;
+    color: var(--accentColor);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    cursor: pointer;
+}
+
+.scannerIcon {
+    font-size: 40vh;
+    color: #bbbbbb;
+    margin-bottom: 50px;
+}
