@@ -4,20 +4,25 @@ import axios from 'axios';
 import './StudentInfoPopup.css';
 import UntisTimetableView from './UntisTimetableView';
 
-function StudentInfoPopup({ id }) {
+function StudentInfoPopup({ id, cardId }) {
     const [student, setStudent] = useState(false);
 
     useEffect(() => {
-        console.log(id)
-        axios.get('/api/students/getStudent?cardId=' + id, {})
+        var url = '/api/students/getStudent?';
+        if (id) {
+            url += "id=" + id;
+        } else {
+            url += "cardId=" + cardId;
+        }
+        axios.get(url, {})
         .then((response) => {
             setStudent(response.data);
         }).catch((e) => {
             console.log(e);
         });
-    }, []);
+    }, [id, cardId]);
 
-    if (student == false) {
+    if (student === false) {
         console.log(student);
         return (
             <div className='studentInfoPopup'>
@@ -54,7 +59,7 @@ function StudentInfoPopup({ id }) {
                 </div>
                 <div className='studentInfoSection'>
                     <span className='tiny'>E-Mail</span>
-                    <a href={'mailto:' + student.studentEmail} target='_blank'>{student.studentEmail}</a>
+                    <a href={'mailto:' + student.studentEmail} target='_blank' rel='noreferrer'>{student.studentEmail}</a>
                 </div>
                 <div className='studentInfoSection'>
                     <span className='tiny'>Klasse</span>
@@ -73,7 +78,7 @@ function StudentInfoPopup({ id }) {
                     {student.parentEmails.map((email) => {
                         return (
                             <div>
-                                <a href={'mailto:' + email.email} target='_blank'>{email.email}</a>
+                                <a href={'mailto:' + email.email} target='_blank' rel='noreferrer'>{email.email}</a>
                                 {" (" + email.description + ")"}
                             </div>
                         )
@@ -84,7 +89,7 @@ function StudentInfoPopup({ id }) {
                     {student.phoneNumbers.map((number) => {
                         return (
                             <div>
-                                <a href={'tel:' + number.phoneNumber.replace(/\s/g, "")} target='_blank'>{number.phoneNumber}</a>
+                                <a href={'tel:' + number.phoneNumber.replace(/\s/g, "")} target='_blank' rel='noreferrer'>{number.phoneNumber}</a>
                                 {" (" + number.description + ")"}
                             </div>
                         )

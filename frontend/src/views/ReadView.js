@@ -20,14 +20,14 @@ function ReadView() {
   readSocket.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     console.log(data);
-    setPopup(<StudentInfoPopup id={data.nfcId} />);
+    setPopup(<StudentInfoPopup cardId={data.nfcId} />);
   });
 
   return (
     <div className='readView'>
         <FontAwesomeIcon icon={faWifi} className='scannerIcon'/>
         <button>NFC-Scanner verbinden</button>
-        <button onClick={() => setPopup(<EnterStudentPopup onSubmit={(input) => {console.log(input); setPopup(<StudentInfoPopup id={input} />)}} />)}>Kartennummer eingeben</button>
+        <button onClick={() => setPopup(<EnterStudentPopup onSubmit={(input) => {console.log(input); setPopup(<StudentInfoPopup cardId={input} />)}} />)}>Kartennummer eingeben</button>
         
         {
           popup ? (
