@@ -2,6 +2,7 @@ const passport = require('passport');
 const OpenIDConnectStrategy = require('passport-openidconnect');
 const axios = require('axios');
 const logger = require('log4js').getLogger("default");
+const userData = require('./userData');
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -23,12 +24,13 @@ axios.get(process.env.OIDC_ISSUER + "/.well-known/openid-configuration").then((r
             clientSecret: process.env.OIDC_CLIENT_SECRET,
             callbackURL: process.env.APP_URL + "/auth/oidc/callback",
             scope: ["profile", "groups"]
-        }, (issuer, uiprofile, idprofile, ctx, idtoken, acctoken, retoken, params, cb) => {
-            console.log(uiprofile);
+        }, async (issuer, uiprofile, idprofile, ctx, idtoken, acctoken, retoken, params, cb) => {
+            await userData.updateUserData(uiprofile);
             return cb(null, {
                 username: uiprofile.username,
                 name: uiprofile.displayName,
-                groups: uiprofile._json.groups
+                groups: uiprofile._json.groups,
+                permissions: await userData.getPermissions(uiprofile)
             });
         }));
 

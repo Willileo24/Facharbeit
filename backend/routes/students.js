@@ -2,10 +2,16 @@ const express = require('express');
 const { WebUntisSecretAuth, WebUntisElementType } = require('webuntis');
 const { authenticator } = require('otplib');
 const database = require('../database');
+const { hasPermission } = require('../auth/userData');
 
 const router = express.Router();
 
 router.get('/getStudent', async (req, res) => {
+    if (!hasPermission(req.user, "students.view")) {
+        res.sendStatus(403);
+        return;
+    }
+
     let student;
     if (req.query.id) {
         student = await database.getStudentById(req.query.id);
@@ -14,10 +20,21 @@ router.get('/getStudent', async (req, res) => {
     } else {
         res.sendStatus(400);
     }
-    res.json(student);
+    let result = {};
+    Object.keys(student).forEach((key) => {
+        if (hasPermission(req.user, "students.data." + key)) {
+            result[key] = student[key];
+        }
+    });
+    res.send(result);
 });
 
 router.get('/getStudentTimetable', async (req, res) => {
+    if (!hasPermission(req.user, "students.data.timetable")) {
+        res.sendStatus(403);
+        return;
+    }
+
     if (req.query.id) {
         let student = await database.getStudentById(req.query.id);
         if (student.untisID) {
@@ -37,6 +54,11 @@ router.get('/getStudentTimetable', async (req, res) => {
 });
 
 router.get('/getStudents', async (req, res) => {
+    if (!hasPermission(req.user, "students.search")) {
+        res.sendStatus(403);
+        return;
+    }
+
     if (req.query.name) {
         res.json(await database.getStudentsByName(req.query.name));
     } else {
@@ -45,6 +67,11 @@ router.get('/getStudents', async (req, res) => {
 });
 
 router.post('/addStudent', async (req, res) => {
+    if (!hasPermission(req.user, "admin.students.add")) {
+        res.sendStatus(403);
+        return;
+    }
+
     if (req.body.name && req.body.firstName && req.body.birthDate && req.body.address && req.body.email) {
         res.json({
             id: await database.insertStudent(req.body.name, req.body.firstName, req.body.birthDate, req.body.address, req.body.email, req.body.class)
@@ -55,6 +82,11 @@ router.post('/addStudent', async (req, res) => {
 });
 
 router.get('/deleteStudent', async (req, res) => {
+    if (!hasPermission(req.user, "admin.students.delete")) {
+        res.sendStatus(403);
+        return;
+    }
+
     if (req.query.id) {
         database.deleteStudent(req.query.id);
         res.sendStatus(200);
@@ -64,6 +96,11 @@ router.get('/deleteStudent', async (req, res) => {
 });
 
 router.post('/editStudent', async (req, res) => {
+    if (!hasPermission(req.user, "admin.students.edit")) {
+        res.sendStatus(403);
+        return;
+    }
+
     if (req.body.id) {
         res.json(await database.editStudent(req.body.id, req.body));
     } else {
