@@ -15,7 +15,7 @@ function ReadView() {
     return;
   }
 
-  const readSocket = new WebSocket("ws://localhost:5000/api/nfc");
+  const readSocket = new WebSocket((window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host + "/api/nfc");
 
   readSocket.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
