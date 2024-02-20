@@ -10,7 +10,7 @@ router.get('/oidc/callback', passport.authenticate('openidconnect'), (req, res) 
     res.redirect('/')
 });
 
-router.get('/userInfo', ensureAuthenticated, (req, res) => {
+router.get('/userInfo', (req, res) => {
     res.json(req.user);
 });
 

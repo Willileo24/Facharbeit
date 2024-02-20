@@ -1,18 +1,45 @@
 import { BrowserRouter as Router } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 import './App.css';
 import Sidebar from './Sidebar';
 import ReadView from './views/ReadView';
 import SearchView from './views/SearchView';
+import { selectUser, setUser } from './features/userSlice';
+import { useEffect } from 'react';
 
 function App() {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios.get('/auth/userInfo')
+    .then((response) => {
+      if (response.data.username) {
+        dispatch(setUser(response.data));
+      } else {
+        dispatch(setUser(null));
+        window.location = "/auth/login";
+        return;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, [dispatch]);
+
   return (
     <Router>
-      <Sidebar />
-      <div className='content'>
-        <ReadView />
-        <SearchView />
-      </div>
+      { user ? (
+        <>
+          <Sidebar />
+          <div className='content'>
+            <ReadView />
+            <SearchView />
+          </div>
+        </>
+      ) : null}
     </Router>
   );
 }
