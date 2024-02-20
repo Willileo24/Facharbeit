@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     axios.get('/auth/userInfo')
     .then((response) => {
-      if (response.data.username) {
+      if (response.data.userId) {
         dispatch(setUser(response.data));
       } else {
         dispatch(setUser(null));

@@ -27,6 +27,7 @@ axios.get(process.env.OIDC_ISSUER + "/.well-known/openid-configuration").then((r
         }, async (issuer, uiprofile, idprofile, ctx, idtoken, acctoken, retoken, params, cb) => {
             await userData.updateUserData(uiprofile);
             return cb(null, {
+                userId: uiprofile.id,
                 username: uiprofile.username,
                 name: uiprofile.displayName,
                 groups: uiprofile._json.groups,
