@@ -16,7 +16,7 @@ function UntisLesson({ lesson }) {
         <div className={classes}>
             <span className='startTime'>{convertTime(lesson.startTime)}</span>
             <span className='subject'>{(lesson.su.length > 0 ? lesson.su[0].longname : "Kein Fach")}</span>
-            <span className='teacher'>{(lesson.te.length > 0 ? lesson.te[0].longname : "Keine Leerkraft")}</span>
+            <span className='teacher'>{(lesson.te.length > 0 ? lesson.te[0].longname : "Keine Lehrkraft")}</span>
             <span className='room'>{(lesson.ro.length > 0 ? lesson.ro[0].name : "Kein Raum")}</span>
             <span className='endTime'>{convertTime(lesson.endTime)}</span>
         </div>
