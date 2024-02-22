@@ -1,0 +1,63 @@
+.editStudentPopup {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 20px;
+}
+
+.editStudentPopup .controls {
+    grid-column: 1/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editStudentPopup .studentInfoSection {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.editStudentPopup input {
+    padding: 5px 5px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    outline: none !important;
+    border: none;
+    width: 100%;
+    margin-bottom: 1px;
+}
+
+.editStudentPopup .tiny {
+    font-size: 10px;
+    font-weight: bolder;
+}
+
+.editStudentPopup .multiInfoSection {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+}
+
+.multiInfoSection input {
+    width: 90%;
+}
+
+.multiInfoSection .tiny {
+    grid-column: 1/4;
+}
+
+.editStudentPopup button {
+    padding: 5px;
+    margin: 5px;
+    background-color: #ffffff;
+    border: none;
+    color: var(--accentColor);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    cursor: pointer;
+}
+
+.editStudentPopup .controls button {
+    width: 300px;
+}

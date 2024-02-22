@@ -7,6 +7,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import './SearchView.css';
 import StudentInfoPopup from './StudentInfoPopup';
+import EditStudentPopup from './EditStudentPopup';
 
 function SearchView() {
     const [query, setQuery] = useState();
@@ -45,7 +46,7 @@ function SearchView() {
                 </tr>
                 {results.map((student) => {
                     return (
-                        <tr className='studentEntry' onClick={() => setPopup(<StudentInfoPopup id={student.id} />)}>
+                        <tr className='studentEntry' onClick={() => setPopup(<StudentInfoPopup id={student.id} setPopup={setPopup} />)}>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
                             <td>{student.firstName}</td>

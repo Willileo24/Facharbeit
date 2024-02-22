@@ -3,8 +3,9 @@ import axios from 'axios';
 
 import './StudentInfoPopup.css';
 import UntisTimetableView from './UntisTimetableView';
+import EditStudentPopup from './EditStudentPopup';
 
-function StudentInfoPopup({ id, cardId }) {
+function StudentInfoPopup({ id, cardId, setPopup }) {
     const [student, setStudent] = useState(false);
 
     useEffect(() => {
@@ -99,6 +100,9 @@ function StudentInfoPopup({ id, cardId }) {
             <div className='studentInfoSection'>
                 <span className='tiny'>Stundenplan</span>
                 <UntisTimetableView id={student.id} />
+            </div>
+            <div className='controls'>
+                <button onClick={() => setPopup(<EditStudentPopup id={student.id} onFinish={() => setPopup(null)} />)}>Schüler*in bearbeiten</button>
             </div>
         </div>
     );
