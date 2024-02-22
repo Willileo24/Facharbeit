@@ -10,6 +10,7 @@ function EditStudentPopup({ id, onFinish }) {
   const [newStundent, setNewStudent] = useState({});
 
   useEffect(() => {
+    if (id) {
       axios.get('/api/students/getStudent?id=' + id, {})
       .then((response) => {
           setStudent(response.data);
@@ -17,6 +18,13 @@ function EditStudentPopup({ id, onFinish }) {
       }).catch((e) => {
           console.log(e);
       });
+    } else {
+        setStudent(null);
+        setNewStudent({
+            parentEmails: [],
+            phoneNumbers: []
+        });
+    }
   }, [id]);
 
   if (student === false) {
@@ -24,13 +32,6 @@ function EditStudentPopup({ id, onFinish }) {
     return (
         <div className='studentInfoPopup'>
             <>Lade Schüler*in...</>
-        </div>
-    );
-}
-if (student == null) {
-    return (
-        <div className='studentInfoPopup'>
-            <>Schüler*in nicht gefunden</>
         </div>
     );
 }
@@ -64,7 +65,7 @@ if (student == null) {
         </div>
         <div className='studentInfoSection'>
             <span className='tiny'>Schließfachnummer</span>
-            <input type='number' value={newStundent.lockerID} onChange={(e) => setNewStudent({...newStundent, class: e.target.value})}></input>
+            <input type='number' value={newStundent.lockerID} onChange={(e) => setNewStudent({...newStundent, lockerID: e.target.value})}></input>
         </div>
         <div className='studentInfoSection'>
             <span className='tiny'>Untis SchülerID</span>
@@ -162,12 +163,12 @@ if (student == null) {
       <div className='controls'>
             <button onClick={() => {
                 let payload = {};
-                Object.keys(newStundent).forEach((key) => {
-                    if (key !== "id" && student[key] !== newStundent[key]) {
-                        payload[key] = newStundent[key];
-                    }
-                });
                 if (id) {
+                    Object.keys(newStundent).forEach((key) => {
+                        if (key !== "id" && student[key] !== newStundent[key]) {
+                            payload[key] = newStundent[key];
+                        }
+                    });
                     axios.post("/api/students/editStudent", {id, ...payload})
                     .then(() => {
                         onFinish();
@@ -176,7 +177,7 @@ if (student == null) {
                         console.log(err);
                     });
                 } else {
-                    axios.post("/api/students/addStudent", payload)
+                    axios.post("/api/students/addStudent", newStundent)
                     .then(() => {
                         onFinish();
                     })

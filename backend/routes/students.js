@@ -72,10 +72,9 @@ router.post('/addStudent', async (req, res) => {
         return;
     }
 
-    if (req.body.name && req.body.firstName && req.body.birthDate && req.body.address && req.body.email) {
-        res.json({
-            id: await database.insertStudent(req.body.name, req.body.firstName, req.body.birthDate, req.body.address, req.body.email, req.body.class)
-        });
+    if (req.body.name && req.body.firstName && req.body.birthDate && req.body.address && req.body.studentEmail) {
+        const id = await database.insertStudent(req.body.name, req.body.firstName, req.body.birthDate, req.body.address, req.body.studentEmail, req.body.class)
+        res.json(await database.editStudent(id, req.body));
     } else {
         res.sendStatus(400);
     }

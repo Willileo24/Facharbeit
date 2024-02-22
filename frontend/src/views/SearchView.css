@@ -5,11 +5,15 @@
     height: 100vh;
 }
 
+.searchView .top {
+    display: flex;
+    margin-bottom: 20px;
+}
+
 .searchView .search {
     display: flex;
     padding: 10px 25px;
     margin: 5px;
-    margin-bottom: 20px;
     background-color: #ffffff;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
@@ -22,6 +26,17 @@
     outline: none !important;
     border: none;
     background: none;
+}
+
+.searchView button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #ffffff;
+    border: none;
+    color: var(--accentColor);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    cursor: pointer;
 }
 
 .searchView table {

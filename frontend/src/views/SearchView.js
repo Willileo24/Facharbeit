@@ -33,9 +33,12 @@ function SearchView() {
 
     return (
         <div className='searchView'>
-            <div className='search'>
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                <input id='query' placeholder="Suche" onChange={() => {setQuery(document.getElementById('query').value)}}></input>
+            <div className='top'>
+                <div className='search'>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    <input id='query' placeholder="Suche" onChange={() => {setQuery(document.getElementById('query').value)}}></input>
+                </div>
+                <button onClick={() => setPopup(<EditStudentPopup onFinish={() => setPopup(null)}/>)}>Hinzufügen</button>
             </div>
             <table>
                 <tr>
