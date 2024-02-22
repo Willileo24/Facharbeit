@@ -72,7 +72,7 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                 </div>
                 <div className='studentInfoSection'>
                     <span className='tiny'>Ausweis gesperrt</span>
-                    {(student.cardLocked ? "Ja" : "Nein")}
+                    {(JSON.parse(student.cardLocked) ? "Ja" : "Nein")}
                 </div>
                 <div className='studentInfoSection'>
                     <span className='tiny'>Eltern E-Mails</span>
@@ -103,6 +103,17 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
             </div>
             <div className='controls'>
                 <button onClick={() => setPopup(<EditStudentPopup id={student.id} onFinish={() => setPopup(null)} />)}>Schüler*in bearbeiten</button>
+                <button onClick={() => {
+                    if (window.confirm(`${student.firstName} ${student.name} wirklich löschen?`)) {
+                        axios.get('/api/students/deleteStudent?id=' + student.id)
+                        .then(() => {
+                            setPopup(null);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    }
+                }}>Schüler*in löschen</button>
             </div>
         </div>
     );
