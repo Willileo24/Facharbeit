@@ -102,6 +102,15 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                 <UntisTimetableView id={student.id} />
             </div>
             <div className='controls'>
+                <button onClick={() => {
+                    axios.post('/api/students/editStudent', {id: student.id, cardLocked: (JSON.parse(student.cardLocked) ? false : true)})
+                    .then((response) => {
+                        setStudent(response.data);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+                }}>Ausweis {(JSON.parse(student.cardLocked) ? "entsperren" : "sperren")}</button>
                 <button onClick={() => setPopup(<EditStudentPopup id={student.id} onFinish={() => setPopup(null)} />)}>Schüler*in bearbeiten</button>
                 <button onClick={() => {
                     if (window.confirm(`${student.firstName} ${student.name} wirklich löschen?`)) {
