@@ -14,13 +14,22 @@ function UntisLesson({ lesson }) {
     }
     return (
         <div className={classes}>
-            <span className='startTime'>{lesson.startTime}</span>
-            <span className='subject'>{lesson.su[0].longname}</span>
-            <span className='teacher'>{lesson.te[0].longname}</span>
-            <span className='room'>{lesson.ro[0].name}</span>
-            <span className='endTime'>{lesson.endTime}</span>
+            <span className='startTime'>{convertTime(lesson.startTime)}</span>
+            <span className='subject'>{(lesson.su.length > 0 ? lesson.su[0].longname : "Kein Fach")}</span>
+            <span className='teacher'>{(lesson.te.length > 0 ? lesson.te[0].longname : "Keine Leerkraft")}</span>
+            <span className='room'>{(lesson.ro.length > 0 ? lesson.ro[0].name : "Kein Raum")}</span>
+            <span className='endTime'>{convertTime(lesson.endTime)}</span>
         </div>
     );
+}
+
+function convertTime(untisTime) {
+    let timeString = untisTime.toString();
+    if (timeString.length === 3) {
+        return timeString.substring(0, 1) + ":" + timeString.substring(1, 3);
+    } else {
+        return timeString.substring(0, 2) + ":" + timeString.substring(2, 4);
+    }
 }
 
 export default UntisLesson;
