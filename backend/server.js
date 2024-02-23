@@ -29,6 +29,7 @@ if (!process.env.PORT) {
 
 // Setup server
 const app = express();
+app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(log4js.connectLogger(logger, { level: "auto" }));
@@ -43,6 +44,7 @@ app.use(passport.session());
 app.use('/api/students', ensureAuthenticated, require('./routes/students'));
 app.use('/api/nfc', require('./routes/nfc').router);
 app.use('/auth', require('./routes/auth'));
+app.use('/public', require('./routes/public'));
 
 let server = app.listen(process.env.PORT, () => {
     logger.info(`Server is running on port ${process.env.port}`);

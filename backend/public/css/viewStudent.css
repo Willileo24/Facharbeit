@@ -1,0 +1,15 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.studentInfoSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.tiny {
+    font-size: 10px;
+    font-weight: bolder;
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schülerausweis</title>
+    <link rel="stylesheet" href="/public/css/viewStudent.css">
+</head>
+<body>
+    <div class="studentInfo">
+        <h2>Schülerausweis gültig</h2>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Name</span>
+                <%= student.name %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Vorname</span>
+                <%= student.firstName %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Gebturtsdatum</span>
+                <%= new Date(student.birthDate).toLocaleDateString() %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Adresse</span>
+                <%= student.address %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>E-Mail</span>
+                <a href='mailto:<%= student.studentEmail %>' target='_blank' rel='noreferrer'><%= student.studentEmail %></a>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Klasse</span>
+                <%= student.class %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Schließfachnummer</span>
+                <%= student.lockerID %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Eltern E-Mails</span>
+                <% student.parentEmails.map((email) => { %>
+                    <div>
+                        <a href='mailto:<%= email.email %>' target='_blank' rel='noreferrer'><%= email.email %></a> <%= email.description %>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+        <% if (student.name) { %>
+            <div class='studentInfoSection'>
+                <span class='tiny'>Telefonnummern</span>
+                <% student.phoneNumbers.map((number) => { %>
+                        <div>
+                            <a href='tel:<%= number.phoneNumber.replace(/\s/g, "") %>' target='_blank' rel='noreferrer'><%= number.phoneNumber %></a> <%= number.description %>
+                        </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
