@@ -56,7 +56,7 @@ function query(query) {
 
 async function updateUserData(user) {
     await query(`INSERT OR IGNORE INTO users (id, permissions) VALUES ('${user.id}', '');`);
-    await query(`UPDATE users SET displayName = '${user.displayName}', username = '${user.preferred_username}' WHERE id = '${user.id}';`);
+    await query(`UPDATE users SET displayName = '${user.displayName}', username = '${user.username}' WHERE id = '${user.id}';`);
     user._json.groups.forEach((group) => {
         query(`INSERT OR IGNORE INTO groups (groupName, permissions) VALUES ('${group}', '');`);
     });
