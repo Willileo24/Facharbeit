@@ -98,8 +98,24 @@ function hasPermission(user, permission) {
     return false;
 }
 
+async function getUsers() {
+    let rows = await query(`SELECT id, displayName, permissions FROM users;`);
+    return rows.map((row) => {
+        return {
+            ...row,
+            permissions: row.permissions.split(",")
+        }
+    });
+}
+
+async function setUserPermissions(id, permissions) {
+    await query(`UPDATE users SET permissions = '${permissions.join(',')}' WHERE id = '${id}';`)
+}
+
 module.exports = {
     updateUserData,
     getPermissions,
-    hasPermission
+    hasPermission,
+    getUsers,
+    setUserPermissions
 }

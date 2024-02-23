@@ -42,6 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/students', ensureAuthenticated, require('./routes/students'));
+app.use('/api/system', ensureAuthenticated, require('./routes/system'));
 app.use('/api/nfc', require('./routes/nfc').router);
 app.use('/auth', require('./routes/auth'));
 app.use('/public', require('./routes/public'));

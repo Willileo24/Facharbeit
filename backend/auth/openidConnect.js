@@ -25,6 +25,9 @@ axios.get(process.env.OIDC_ISSUER + "/.well-known/openid-configuration").then((r
             callbackURL: process.env.APP_URL + "/auth/oidc/callback",
             scope: ["profile", "groups"]
         }, async (issuer, uiprofile, idprofile, ctx, idtoken, acctoken, retoken, params, cb) => {
+            if (!uiprofile._json.groups) {
+                uiprofile._json.groups = [];
+            }
             await userData.updateUserData(uiprofile);
             return cb(null, {
                 userId: uiprofile.id,

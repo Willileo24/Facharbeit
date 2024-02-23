@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    background-color: #ffffff;
+    border-left: 1px solid #f1f1f1;
+}
+
+.header a {
+    padding: 15px;
+    color: #aaaaaa;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.header a:hover,
+.header a.active {
+    background-color: #00000010;
+    color: var(--accentColor);
+}

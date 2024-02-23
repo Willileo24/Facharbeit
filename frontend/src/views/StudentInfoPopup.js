@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
 
 import './StudentInfoPopup.css';
 import UntisTimetableView from './UntisTimetableView';
 import EditStudentPopup from './EditStudentPopup';
+import { hasPermission } from '../features/permissions';
 
 function StudentInfoPopup({ id, cardId, setPopup }) {
+    const user = useSelector(selectUser);
     const [student, setStudent] = useState(false);
 
     useEffect(() => {
@@ -42,38 +46,55 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
     return (
         <div className='studentInfoPopup'>
             <div>
+                { student.name ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Name</span>
                     {student.name}
                 </div>
+                ) : null}
+                { student.firstName ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Vorname</span>
                     {student.firstName}
                 </div>
+                ) : null}
+                { student.birthDate ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Gebturtsdatum</span>
                     {new Date(student.birthDate).toLocaleDateString()}
                 </div>
+                ) : null}
+                { student.address ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Adresse</span>
                     {student.address}
                 </div>
+                ) : null}
+                { student.studentEmail ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>E-Mail</span>
                     <a href={'mailto:' + student.studentEmail} target='_blank' rel='noreferrer'>{student.studentEmail}</a>
                 </div>
+                ) : null}
+                { student.class ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Klasse</span>
                     {student.class}
                 </div>
+                ) : null}
+                { student.lockerID ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Schließfachnummer</span>
                     {student.lockerID}
                 </div>
+                ) : null}
+                { student.cardLocked ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Ausweis gesperrt</span>
                     {(JSON.parse(student.cardLocked) ? "Ja" : "Nein")}
                 </div>
+                ) : null}
+                { student.parentEmails ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Eltern E-Mails</span>
                     {student.parentEmails.map((email) => {
@@ -85,6 +106,8 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                         )
                     })}
                 </div>
+                ) : null}
+                { student.phoneNumbers ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Telefonnummern</span>
                     {student.phoneNumbers.map((number) => {
@@ -96,11 +119,15 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                         )
                     })}
                 </div>
+                ) : null}
             </div>
+            { hasPermission(user.permissions, "student.data.timetable") ? (
             <div className='studentInfoSection'>
                 <span className='tiny'>Stundenplan</span>
                 <UntisTimetableView id={student.id} />
             </div>
+            ) : null}
+            { hasPermission(user.permissions, "admin.students") ? (
             <div className='controls'>
                 <button onClick={() => {
                     axios.post('/api/students/editStudent', {id: student.id, cardLocked: (JSON.parse(student.cardLocked) ? false : true)})
@@ -124,6 +151,7 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                     }
                 }}>Schüler*in löschen</button>
             </div>
+            ) : null}
         </div>
     );
 }

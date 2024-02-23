@@ -7,9 +7,9 @@ import SidebarElement from './SidebarElement';
 function Sidebar() {
   return (
     <div className='sidebar'>
-        <SidebarElement link="/read" text="Ausweis lesen" icon={faQrcode}/>
-        <SidebarElement link="/search" text="Schüler*in suchen" icon={faMagnifyingGlass}/>
-        <SidebarElement link="/settings" text="Einstellungen" icon={faGears}/>
+        <SidebarElement link="/read" text="Ausweis lesen" permission="students.view" icon={faQrcode}/>
+        <SidebarElement link="/search" text="Schüler*in suchen" permission="students.search" icon={faMagnifyingGlass}/>
+        <SidebarElement link="/settings" text="Einstellungen" permission="admin.users" icon={faGears}/>
     </div>
   );
 }

@@ -67,7 +67,7 @@ router.get('/getStudents', async (req, res) => {
 });
 
 router.post('/addStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students.add")) {
+    if (!hasPermission(req.user, "admin.students")) {
         res.sendStatus(403);
         return;
     }
@@ -81,7 +81,7 @@ router.post('/addStudent', async (req, res) => {
 });
 
 router.get('/deleteStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students.delete")) {
+    if (!hasPermission(req.user, "admin.students")) {
         res.sendStatus(403);
         return;
     }
@@ -95,7 +95,7 @@ router.get('/deleteStudent', async (req, res) => {
 });
 
 router.post('/editStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students.edit")) {
+    if (!hasPermission(req.user, "admin.students")) {
         res.sendStatus(403);
         return;
     }

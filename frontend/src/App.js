@@ -8,6 +8,8 @@ import ReadView from './views/ReadView';
 import SearchView from './views/SearchView';
 import { selectUser, setUser } from './features/userSlice';
 import { useEffect } from 'react';
+import SettingsView from './views/SettingsView';
+import { hasPermission } from './features/permissions';
 
 function App() {
   const user = useSelector(selectUser);
@@ -31,12 +33,13 @@ function App() {
 
   return (
     <Router>
-      { user ? (
+      { user && user.permissions && hasPermission(user.permissions, "login") ? (
         <>
           <Sidebar />
           <div className='content'>
             <ReadView />
             <SearchView />
+            <SettingsView />
           </div>
         </>
       ) : null}
