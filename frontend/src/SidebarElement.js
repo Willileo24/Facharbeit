@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from './features/userSlice';
 import { hasPermission } from './features/permissions';
 
-function SidebarElement({ text, link, icon, permission }) {
+function SidebarElement({ text, link, icon, permission, linkOut }) {
   const location = useLocation();
   const user = useSelector(selectUser);
 
@@ -20,12 +20,21 @@ function SidebarElement({ text, link, icon, permission }) {
       return;
     }
 
-    return (
-      <Link to={link} className={classNames}>
-        <FontAwesomeIcon icon={icon} />
-        {text}
-      </Link>
-    );
+    if (linkOut) {
+      return (
+        <a href={link} className={classNames}>
+          <FontAwesomeIcon icon={icon} />
+          {text}
+        </a>
+      );
+    } else {
+      return (
+        <Link to={link} className={classNames}>
+          <FontAwesomeIcon icon={icon} />
+          {text}
+        </Link>
+      );
+    }
 }
 
 export default SidebarElement;
