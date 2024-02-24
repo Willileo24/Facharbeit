@@ -74,14 +74,14 @@ async function getGroupPermissions(groupId) {
 
 async function getPermissions(user) {
     let permissions = await getUserPermissions(user.id);
-    await user._json.groups.forEach(async (group) => {
-        let perms = await getGroupPermissions(group);
+    for (var i = 0; i < user._json.groups.length; i++) {
+        let perms = await getGroupPermissions(user._json.groups[i]);
         perms.forEach((perm) => {
             if (!permissions.includes(perm)) {
                 permissions.push(perm);
             }
         });
-    });
+    }
     return permissions;
 }
 
@@ -112,10 +112,26 @@ async function setUserPermissions(id, permissions) {
     await query(`UPDATE users SET permissions = '${permissions.join(',')}' WHERE id = '${id}';`)
 }
 
+async function getGroups() {
+    let rows = await query(`SELECT groupName, permissions FROM groups;`);
+    return rows.map((row) => {
+        return {
+            ...row,
+            permissions: row.permissions.split(",")
+        }
+    });
+}
+
+async function setGroupPermissions(groupName, permissions) {
+    await query(`UPDATE groups SET permissions = '${permissions.join(',')}' WHERE groupName = '${groupName}';`)
+}
+
 module.exports = {
     updateUserData,
     getPermissions,
     hasPermission,
     getUsers,
-    setUserPermissions
+    setUserPermissions,
+    getGroups,
+    setGroupPermissions
 }

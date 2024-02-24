@@ -18,6 +18,14 @@ function SettingsView() {
       .catch((err) => {
         console.log(err);
       });
+    } else if (pathname.startsWith("/settings/groups")) {
+      axios.get("/api/system/getGroups")
+      .then((response) => {
+        setEntries(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     } else {
       setEntries([]);
     }
@@ -34,12 +42,20 @@ function SettingsView() {
         <Link to={"/settings/groups"} className={(pathname.startsWith("/settings/groups") ? "active" : null)}>Gruppenberechtigungen</Link>
       </div>
       <div className='permissionList'>
-        {console.log(entries)}
-        {entries.map((entry) => {
-          return (
-            <PermissionEntry type="user" id={entry.id} name={entry.displayName} permissions={entry.permissions} />
-          )
-        })}
+        {pathname.startsWith("/settings/users") ? (
+          entries.map((entry) => {
+            return (
+              <PermissionEntry type="user" id={entry.id} name={entry.displayName} permissions={entry.permissions} />
+            )
+          })
+        ) : null}
+        {pathname.startsWith("/settings/groups") ? (
+          entries.map((entry) => {
+            return (
+              <PermissionEntry type="group" id={entry.groupName} name={entry.groupName} permissions={entry.permissions} />
+            )
+          })
+        ) : null}
       </div>
     </div>
   );

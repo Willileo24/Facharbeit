@@ -110,13 +110,17 @@ function PermissionEntry({ type, id, name, permissions }) {
                             permissions.push(input.id);
                         }
                     }
+                    var url;
                     if (type === "user") {
-                        axios.post("/api/system/setUserPermissions", {id, permissions})
+                        url = "/api/system/setUserPermissions";
+                    } else if (type === "group") {
+                        url = "/api/system/setGroupPermissions";
+                    }
+                    axios.post(url, {id, permissions})
                         .then(() => {})
                         .catch((err) => {
                             console.log(err);
-                        });
-                    }
+                    });
                 }}>Speichern</button>
                 </>
             ) : null}
