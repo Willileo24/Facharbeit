@@ -15,7 +15,7 @@ function SearchView() {
     const [popup, setPopup] = useState(null);
 
     useEffect(() => {
-        if (query !== "") {
+        if (query && query !== "") {
             axios.get("/api/students/getStudents?name=" + query)
             .then((response) => {
                 setResults(response.data);
