@@ -75,6 +75,10 @@ function EditStudentPopup({ id, onFinish }) {
             <span className='tiny'>Ausweisnummer</span>
             <input type='number' value={newStundent.cardID} onChange={(e) => setNewStudent({...newStundent, cardID: e.target.value})}></input>
         </div>
+        <div className='studentInfoSection'>
+            <span className='tiny'>Mensamax ID</span>
+            <input type='text' value={newStundent.mensaID} onChange={(e) => setNewStudent({...newStundent, mensaID: e.target.value})}></input>
+        </div>
       </div>
       <div>
         <div className='multiInfoSection'>

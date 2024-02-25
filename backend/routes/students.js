@@ -3,6 +3,7 @@ const { WebUntisSecretAuth, WebUntisElementType } = require('webuntis');
 const { authenticator } = require('otplib');
 const database = require('../database');
 const { hasPermission } = require('../auth/userData');
+const logger = require('log4js').getLogger("default");
 
 const router = express.Router();
 
@@ -20,9 +21,13 @@ router.get('/getStudent', async (req, res) => {
     } else {
         res.sendStatus(400);
     }
-    let result = {};
+    if (student == null) {
+        res.sendStatus(404);
+        return;
+    }
+    let result = {id: student.id};
     Object.keys(student).forEach((key) => {
-        if (hasPermission(req.user.permissions, "students.data." + key)) {
+        if (hasPermission(req.user.permissions, "students.data." + key) || hasPermission(req.user.permissions, "admin.students")) {
             result[key] = student[key];
         }
     });
@@ -30,7 +35,7 @@ router.get('/getStudent', async (req, res) => {
 });
 
 router.get('/getStudentTimetable', async (req, res) => {
-    if (!hasPermission(req.user, "students.data.timetable")) {
+    if (!hasPermission(req.user.permissions, "students.data.timetable")) {
         res.sendStatus(403);
         return;
     }
@@ -38,6 +43,7 @@ router.get('/getStudentTimetable', async (req, res) => {
     if (req.query.id) {
         let student = await database.getStudentById(req.query.id);
         if (student.untisID) {
+            try {
             let untis = new WebUntisSecretAuth(process.env.UNTIS_SCHOOL, process.env.UNTIS_USERNAME, process.env.UNTIS_SECRET, process.env.UNTIS_SERVER);
             const token = authenticator.generate(process.env.UNTIS_SECRET);
             const time = new Date().getTime();
@@ -45,6 +51,9 @@ router.get('/getStudentTimetable', async (req, res) => {
             let timetable = await untis.getTimetableFor(new Date(), student.untisID, WebUntisElementType.STUDENT);
             await untis.logout();
             res.json(timetable);
+            } catch(err) {
+                logger.error(err);
+            }
         } else {
             res.json([]);
         }

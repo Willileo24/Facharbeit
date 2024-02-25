@@ -100,6 +100,10 @@ function PermissionEntry({ type, id, name, permissions }) {
                             <input type='checkbox' id='students.data.phoneNumbers' defaultChecked={hasPermission(permissions, "students.data.phoneNumbers")} />
                             <label for='students.data.phoneNumbers'>Telefonnummern</label>
                         </div>
+                        <div>
+                            <input type='checkbox' id='students.data.mensaID' defaultChecked={hasPermission(permissions, "students.data.phoneNumbers")} />
+                            <label for='students.data.mensaID'>Mensamax ID</label>
+                        </div>
                     </div>
                 </div>
                 <button onClick={() => {

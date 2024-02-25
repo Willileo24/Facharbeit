@@ -88,6 +88,12 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                     {student.lockerID}
                 </div>
                 ) : null}
+                { student.mensaID ? (
+                <div className='studentInfoSection'>
+                    <span className='tiny'>Mensamax ID</span>
+                    {student.mensaID}
+                </div>
+                ) : null}
                 { student.cardLocked ? (
                 <div className='studentInfoSection'>
                     <span className='tiny'>Ausweis gesperrt</span>
@@ -121,7 +127,7 @@ function StudentInfoPopup({ id, cardId, setPopup }) {
                 </div>
                 ) : null}
             </div>
-            { hasPermission(user.permissions, "student.data.timetable") ? (
+            { hasPermission(user.permissions, "students.data.timetable") ? (
             <div className='studentInfoSection'>
                 <span className='tiny'>Stundenplan</span>
                 <UntisTimetableView id={student.id} />

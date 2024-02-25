@@ -2,7 +2,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3');
 const logger = require('log4js').getLogger("default");
 
-const EDITABLE_FIELDS = ["name", "firstName", "birthDate", "address", "studentEmail", "class", "lockerID", "cardID", "cardLocked", "untisID"];
+const EDITABLE_FIELDS = ["name", "firstName", "birthDate", "address", "studentEmail", "class", "lockerID", "cardID", "cardLocked", "untisID", "mensaID"];
 
 var db = new sqlite3.Database('./data/database.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
@@ -37,7 +37,8 @@ function createDatabase() {
             lockerID INTEGER,
             cardID INTEGER,
             cardLocked BOOLEAN,
-            untisID INTEGER
+            untisID INTEGER,
+            mensaID TEXT
         );`);
         newdb.exec(`
         CREATE TABLE parentEmails (
@@ -108,7 +109,7 @@ async function getStudentsByName(name) {
 }
 
 async function insertStudent(name, firstName, birthDate, address, studentEmail, studentClass) {
-    let result = await query(`INSERT INTO students (name, firstName, birthDate, address, studentEmail, class) VALUES ('${name}', '${firstName}', ${Date.parse(birthDate)}, '${address}', '${studentEmail}', '${studentClass}') RETURNING id;`);
+    let result = await query(`INSERT INTO students (name, firstName, birthDate, address, studentEmail, class, cardLocked) VALUES ('${name}', '${firstName}', ${Date.parse(birthDate)}, '${address}', '${studentEmail}', '${studentClass}', false) RETURNING id;`);
     return result[0].id;
 }
 
