@@ -7,7 +7,7 @@ const { hasPermission } = require('../auth/userData');
 const router = express.Router();
 
 router.get('/getStudent', async (req, res) => {
-    if (!hasPermission(req.user, "students.view")) {
+    if (!hasPermission(req.user.permissions, "students.view")) {
         res.sendStatus(403);
         return;
     }
@@ -22,7 +22,7 @@ router.get('/getStudent', async (req, res) => {
     }
     let result = {};
     Object.keys(student).forEach((key) => {
-        if (hasPermission(req.user, "students.data." + key)) {
+        if (hasPermission(req.user.permissions, "students.data." + key)) {
             result[key] = student[key];
         }
     });
@@ -54,7 +54,7 @@ router.get('/getStudentTimetable', async (req, res) => {
 });
 
 router.get('/getStudents', async (req, res) => {
-    if (!hasPermission(req.user, "students.search")) {
+    if (!hasPermission(req.user.permissions, "students.search")) {
         res.sendStatus(403);
         return;
     }
@@ -67,7 +67,7 @@ router.get('/getStudents', async (req, res) => {
 });
 
 router.post('/addStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students")) {
+    if (!hasPermission(req.user.permissions, "admin.students")) {
         res.sendStatus(403);
         return;
     }
@@ -81,7 +81,7 @@ router.post('/addStudent', async (req, res) => {
 });
 
 router.get('/deleteStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students")) {
+    if (!hasPermission(req.user.permissions, "admin.students")) {
         res.sendStatus(403);
         return;
     }
@@ -95,7 +95,7 @@ router.get('/deleteStudent', async (req, res) => {
 });
 
 router.post('/editStudent', async (req, res) => {
-    if (!hasPermission(req.user, "admin.students")) {
+    if (!hasPermission(req.user.permissions, "admin.students")) {
         res.sendStatus(403);
         return;
     }

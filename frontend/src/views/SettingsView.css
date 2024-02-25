@@ -17,3 +17,15 @@
     background-color: #00000010;
     color: var(--accentColor);
 }
+
+.settingsView button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #ffffff;
+    border: none;
+    color: var(--accentColor);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    cursor: pointer;
+    grid-column: 1/3;
+}

@@ -15,43 +15,43 @@
                 <%= student.name %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.firstName) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Vorname</span>
                 <%= student.firstName %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.birthDate) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Gebturtsdatum</span>
                 <%= new Date(student.birthDate).toLocaleDateString() %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.address) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Adresse</span>
                 <%= student.address %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.studentEmail) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>E-Mail</span>
                 <a href='mailto:<%= student.studentEmail %>' target='_blank' rel='noreferrer'><%= student.studentEmail %></a>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.class) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Klasse</span>
                 <%= student.class %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.lockerID) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Schließfachnummer</span>
                 <%= student.lockerID %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.parentEmails) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Eltern E-Mails</span>
                 <% student.parentEmails.map((email) => { %>
@@ -61,7 +61,7 @@
                 <% }) %>
             </div>
         <% } %>
-        <% if (student.name) { %>
+        <% if (student.phoneNumbers) { %>
             <div class='studentInfoSection'>
                 <span class='tiny'>Telefonnummern</span>
                 <% student.phoneNumbers.map((number) => { %>

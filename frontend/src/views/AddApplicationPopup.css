@@ -1,0 +1,34 @@
+.addApplicationPopup {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+}
+
+.addApplicationPopup i {
+    font-size: 12px;
+    grid-column: 1/3;
+}
+
+.addApplicationPopup button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    background-color: #ffffff;
+    border: none;
+    color: var(--accentColor);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    cursor: pointer;
+    grid-column: 1/3;
+}
+
+.addApplicationPopup input {
+    padding: 5px 5px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+    outline: none !important;
+    border: none;
+    width: 300px;
+    margin-bottom: 1px;
+}

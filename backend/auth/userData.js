@@ -1,5 +1,6 @@
 const fs = require('fs');
 const sqlite3 = require('sqlite3');
+const bcrypt = require('bcrypt');
 const logger = require('log4js').getLogger("default");
 
 var db = new sqlite3.Database('./data/users.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -35,8 +36,16 @@ function createDatabase() {
             groupName TEXT PRIMARY KEY,
             permissions TEXT
         );`);
+        newdb.exec(`
+        CREATE TABLE apps (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            secret TEXT,
+            permissions TEXT
+        )`);
 
-        newdb.exec(`INSERT INTO users (id, permissions) VALUES ('${process.env.INITIAL_ADMIN_USER_ID}', '*');`)
+        newdb.exec(`INSERT INTO users (id, permissions) VALUES ('${process.env.INITIAL_ADMIN_USER_ID}', '*');`);
+        newdb.exec(`INSERT INTO apps (name, permissions) VALUES ('public', '')`);
     });
     db = newdb;
 }
@@ -85,13 +94,13 @@ async function getPermissions(user) {
     return permissions;
 }
 
-function hasPermission(user, permission) {
-    if (user.permissions.includes(permission)) {
+function hasPermission(permissions, permission) {
+    if (permissions.includes(permission)) {
         return true;
     }
     while (permission != "*") {
         permission = permission.replace(/\w+(\.\*)?$/, "*");
-        if (user.permissions.includes(permission)) {
+        if (permissions.includes(permission)) {
             return true;
         }
     }
@@ -126,6 +135,48 @@ async function setGroupPermissions(groupName, permissions) {
     await query(`UPDATE groups SET permissions = '${permissions.join(',')}' WHERE groupName = '${groupName}';`)
 }
 
+async function getApps() {
+    let rows = await query(`SELECT id, name, permissions FROM apps;`);
+    return rows.map((row) => {
+        return {
+            ...row,
+            permissions: row.permissions.split(",")
+        }
+    });
+}
+
+async function addApp(name, secret) {
+    let hash = await bcrypt.hashSync(secret, 10);
+    let rows = await query(`INSERT INTO apps (name, secret, permissions) VALUES ('${name}', '${hash}', '') RETURNING id;`);
+    return rows[0].id;
+}
+
+async function deleteApp(id) {
+    await query(`DELETE FROM apps WHERE id = ${id};`);
+}
+
+async function setAppPermissions(id, permissions) {
+    await query(`UPDATE apps SET permissions = '${permissions.join(',')}' WHERE id = '${id}';`);
+}
+
+async function getAppPermissions(name) {
+    let rows = await query(`SELECT permissions FROM apps WHERE name = '${name}';`);
+    return rows[0].permissions.split(",");
+}
+
+async function checkAppSecret(name, secret) {
+    let rows = await query(`SELECT * FROM apps WHERE name = '${name}';`);
+    if (rows.length == 1) {
+        if (await bcrypt.compareSync(secret, rows[0].secret)) {
+            return rows[0];
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
 module.exports = {
     updateUserData,
     getPermissions,
@@ -133,5 +184,11 @@ module.exports = {
     getUsers,
     setUserPermissions,
     getGroups,
-    setGroupPermissions
+    setGroupPermissions,
+    getApps,
+    addApp,
+    deleteApp,
+    setAppPermissions,
+    getAppPermissions,
+    checkAppSecret
 }

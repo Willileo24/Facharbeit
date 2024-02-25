@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from './features/userSlice';
 import { hasPermission } from './features/permissions';
 
-function SidebarElement({ text, link, icon, permission, linkOut }) {
+function SidebarElement({ text, link, icon, permissions, linkOut }) {
   const location = useLocation();
   const user = useSelector(selectUser);
 
@@ -16,7 +16,14 @@ function SidebarElement({ text, link, icon, permission, linkOut }) {
         classNames += ' active';
     }
 
-    if (!hasPermission(user.permissions, permission)) {
+    var hasPerm = false;
+    for (var i = 0; i < permissions.length; i++) {
+      if (hasPermission(user.permissions, permissions[i])) {
+        hasPerm = true;
+        break;
+      }
+    }
+    if (!hasPerm) {
       return;
     }
 
