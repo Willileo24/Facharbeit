@@ -12,34 +12,47 @@
             justify-content: center;
             height: 100vh;
         }
+        button {
+            width: 300px;
+            padding: 10px;
+            margin: 5px;
+            background-color: #ffffff;
+            border: none;
+            color: #21a532;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px 0 #00000022, 0 3px 10px 0 #00000010;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="content">
-        Warte auf NFC...
+        <button id="startRead">NFC-Scan starten</button>
     </div>
     <script>
         let urlParams = new URLSearchParams(window.location.search);
         let sessionId = urlParams.get("sessionId");
-        let reader = new NDEFReader();
-
-        reader
-            .scan()
-            .then(() => {
-                reader.onreadingerror = (e) => {
-                    console.log("Error");
-                }
-                reader.onreading = (e) => {
-                    var result = parseInt(e.serialNumber.replaceAll(":", ""), 16)
-                    document.getElementById('content').innerHTML = "Gescannt: " + result;
-                    sendRead(result)
-                    clearTimeout();
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                document.getElementById('content').innerHTML = err;
-            });
+        document.getElementById('startRead').addEventListener('click', async () => {
+            let reader = new NDEFReader();
+            document.getElementById('content').innerHTML = "Warte auf NFC...";
+            await reader
+                .scan()
+                .then(() => {
+                    reader.onreadingerror = (e) => {
+                        console.log("Error");
+                    }
+                    reader.onreading = (e) => {
+                        var result = parseInt(e.serialNumber.replaceAll(":", ""), 16)
+                        document.getElementById('content').innerHTML = "Gescannt: " + result;
+                        sendRead(result)
+                        clearTimeout();
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    document.getElementById('content').innerHTML = err;
+                });
+        });
 
         function clearTimeout() {
             setTimeout(() => {
