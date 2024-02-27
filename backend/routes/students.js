@@ -22,7 +22,7 @@ router.get('/getStudent', async (req, res) => {
         res.sendStatus(400);
     }
     if (student == null) {
-        res.sendStatus(404);
+        res.json(null);
         return;
     }
     let result = {id: student.id};
