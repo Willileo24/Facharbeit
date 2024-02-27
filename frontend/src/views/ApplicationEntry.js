@@ -6,7 +6,7 @@ import axios from 'axios';
 import './PermissionEntry.css';
 import { hasPermission } from '../features/permissions';
 
-function ApplicationEntry({ id, name, permissions }) {
+function ApplicationEntry({ id, name, permissions, onDelete }) {
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -101,7 +101,9 @@ function ApplicationEntry({ id, name, permissions }) {
                 { name !== "public" ? (
                     <button onClick={() => {
                         axios.post("/api/system/deleteApp", {id})
-                            .then(() => {})
+                            .then(() => {
+                                onDelete();
+                            })
                             .catch((err) => {
                                 console.log(err);
                         });

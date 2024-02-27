@@ -83,10 +83,27 @@ function SettingsView() {
           <>
             {entries.map((entry) => {
               return (
-                <ApplicationEntry id={entry.id} name={entry.name} permissions={entry.permissions} />
+                <ApplicationEntry id={entry.id} name={entry.name} permissions={entry.permissions} onDelete={() => {
+                  axios.get("/api/system/getApps")
+                    .then((response) => {
+                      setEntries(response.data);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }} />
               )
             })}
-            <button onClick={() => setPopup(<AddApplicationPopup onFinish={() => setPopup(null)}/>)}>Anwendung hinzufügen</button>
+            <button onClick={() => setPopup(<AddApplicationPopup onFinish={() => {
+              axios.get("/api/system/getApps")
+                .then((response) => {
+                  setEntries(response.data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              setPopup(null);
+              }}/>)}>Anwendung hinzufügen</button>
           </>
         ) : null}
       </div>
